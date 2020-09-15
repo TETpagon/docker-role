@@ -1,0 +1,43 @@
+- name: Install packages to allow apt to use a repository over HTTPS
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - build-essential
+      - python-setuptools
+      - python3-setuptools
+      - python-pip
+    state: present
+    update_cache: yes
+
+- name: Add Docker’s official GPG key
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+
+- name: Add Docker repository
+  apt_repository:
+    repo: "deb https://download.docker.com/linux/{{ ansible_distribution|lower }} {{ ansible_distribution_release }} stable"
+    update_cache: yes
+
+- name: Install docker
+  apt:
+    name: docker-ce={{ docker_version }}
+    state: present
+
+- name: Install docker-py
+  pip:
+    name: docker-py
+    state: absent
+
+- name: Install docker-py
+  pip:
+    name: docker
+    state: present
+
+- name: Ensure Docker is started and enabled at boot.
+  service:
+    name: docker
+    state: started
+    enabled: yes
