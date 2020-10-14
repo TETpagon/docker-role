@@ -1,8 +1,1 @@
 # docker-role
-
-
-
-sdfsd
-
-
-sdfsdf
